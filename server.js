@@ -44,11 +44,14 @@ app.get('/callback', async (req, res) => {
         // Store tokens or handle them as needed
         res.send(`Access Token: ${access_token}<br>Refresh Token: ${refresh_token}`);
     } catch (error) {
-        res.send('Error retrieving access token.');
+        if(!res.headersSent) {
+            res.status(500).send('Error retrieving access token.');
+        }
     }
 });
 app.get('/game.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'game.html'));
+
 });
 
 app.listen(port, () => {
