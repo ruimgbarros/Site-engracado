@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <title>Spotify Auth</title>
 </head>
 <body>
-  <!-- Add this to your HTML to handle Spotify authentication -->
-<a href="https://accounts.spotify.com/authorize?client_id=11a73fdbec8b4e8e837eae1be557ec6e&response_type=token&redirect_uri=http://localhost/Game.html&scope=user-read-private user-read-email">
-  Login with Spotify
-</a>
+    <button id="login-button">Log in with Spotify</button>
 
+    <script>
+        const clientId = '11a73fdbec8b4e8e837eae1be557ec6e';
+        const redirectUri = 'http://localhost:8000/callback';
+        const scopes = 'user-read-private user-read-email'; // Add the scopes you need
+
+        document.getElementById('login-button').addEventListener('click', () => {
+            const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+            window.location.href = url;
+        });
+    </script>
 </body>
 </html>
