@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Over</title>
+</head>
+<body>
+    <h1>Game Over!</h1>
+    <div id="score"></div>
+    <div id="message"></div>
+    <button id="try-again">Try Again</button>
+
+    <script>
+        // Function to get the query parameter from the URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Get the score from the URL
+        const score = parseInt(getQueryParam('score'));
+        document.getElementById('score').textContent = 'Your score: ' + score;
+
+        // Messages based on score
+        const messages = [
+            "You just didin´t try,right?",
+            "Damn, you're THAT bad?",
+            "Do you even have ears?",
+            "Do you even know anything else than pop?",
+            "I wouldn't pass you the aux",
+            "Not bad, but not good either.",
+            "Good guess, not really.",
+            "Mediocre, at best.",
+            "Just use your brain, it's not that hard. ",
+            "Nice score, could be better."
+        ];
+
+        // Determine the message to display based on the score
+        const messageIndex = Math.min(Math.floor(score / 20), messages.length - 1);
+        const message = messages[messageIndex];
+        document.getElementById('message').textContent = message;
+
+        document.getElementById('try-again').onclick = () => {
+            window.location.href = 'index.html'; // Replace with your main game file name if different
+        };
+    </script>
+</body>
+</html>

@@ -53,6 +53,14 @@ app.get('/game.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'game.html'));
 
 });
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+
+});
+app.get('/game_over.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'game_over.html'));
+});
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
