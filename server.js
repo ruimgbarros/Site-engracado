@@ -57,6 +57,10 @@ app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 
 });
+app.get('/background.mp4.mp4', (req, res) => {
+    res.sendFile(path.join(__dirname, 'background.mp4.mp4'));
+
+});
 app.get('/game_over.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'game_over.html'));
 });

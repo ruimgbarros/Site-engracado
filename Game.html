@@ -3,14 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <title>Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #121212; /* Darker background color */
+            color: white;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        iframe {
+            margin-bottom: 3rem; /* Adjusted margin to push buttons down */
+            width: 60%; /* Smaller embed */
+            height: 380px; /* Smaller embed */
+            max-width: 500px; /* Limit max size */
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem; /* Adjusted gap */
+            width: 80%;
+            max-width: 600px;
+        }
+
+        button {
+            background-color: transparent; /* Transparent background */
+            color: #1DB954; /* Text color to match border */
+            border: 2px solid #1DB954; /* Border color */
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 45%;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transition for color change */
+            text-transform: capitalize; /* Ensure first letter is uppercase */
+        }
+
+        button:hover {
+            background-color: #1DB954; /* Background color on hover */
+            color: white; /* Text color on hover */
+        }
+
+        #result {
+            margin-top: 1rem; /* Adjusted margin */
+            font-size: 1.25rem;
+            font-weight: 400;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Game</h1>
-    <iframe id="spotify-embed" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-    <button id="btn1"></button>
-    <button id="btn2"></button>
-    <button id="btn3"></button>
-    <button id="btn4"></button>
+    <div class="header">Genrefy</div>
+    <div class="score" id="score">Score: 0</div>
+    <iframe id="spotify-embed" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    <div class="button-container">
+        <button id="btn1"></button>
+        <button id="btn2"></button>
+        <button id="btn3"></button>
+        <button id="btn4"></button>
+    </div>
     <div id="result"></div>
 
     <script>
@@ -23,7 +100,7 @@
         // Get the access token from the URL
         const accessToken = getQueryParam('access_token');
 
-        const genreList = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"];
+        const genreList = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "classical", "club", "country", "dancehall", "death-metal", "deep-house", "detroit-techno", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "mpb", "new-age","opera", "pagode", "philippines-opm", "piano", "pop", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "reggae", "reggaeton", "rock", "rock-n-roll", "rockabilly", "salsa", "samba", "sertanejo", "singer-songwriter", "ska", "soul", "spanish", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish",];
 
         let score = 0;
 
@@ -87,6 +164,7 @@
             const resultDiv = document.getElementById('result');
             if (selectedGenre === correctGenre) {
                 score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
                 resultDiv.textContent = 'Correct! The genre is ' + correctGenre;
                 setTimeout(() => {
                     resultDiv.textContent = '';

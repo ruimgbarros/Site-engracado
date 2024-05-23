@@ -3,14 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Game Over</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            z-index: -1;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #score {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #message {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            background-color: transparent;
+            color: #1DB954;
+            border: 2px solid #1DB954;
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1DB954;
+            color: white;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <div style="font-size: 1.5rem; font-weight: 700;">Genrefy</div>
+    </div>
+    <div class="background">
+        <img id="bg-gif" src="" alt="Background GIF">
+    </div>
+    <div class="overlay"></div>
     <h1>Game Over!</h1>
     <div id="score"></div>
     <div id="message"></div>
     <button id="try-again">Try Again</button>
 
     <script>
+        // Array of background GIF URLs
+        const gifUrls = [
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTd4Z2VlYmgxZmNldW55bnYwZmF3OGl1bm5yZXU1emNsMm94aW02OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kdwTbIcgZFCww/giphy.gif',
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmhrNGluYTl6NzNlc3VqMnZiYjkzd3ZraHlienJucnM3cDduM2N1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ULrkVrKa1W2wU/giphy.gif',
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3RheDN0cDNtNXhpa2htOXh0eHpnMGU4dHY5dTRwZDIyaW9obDdhNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RccMM7hsUoW4w/giphy.gif',
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjk2Zm5vZWNhdXk2Y3J4OXFreWRqbWxob2Jlb2MzMGNobzNidTN4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IuyTts5mlRpHa/giphy.gif',
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHAzMHA3bHN3NGMzYzh2a3lhaHg4N3JoOWQxZjliOXBmaHl4eDVrcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NU8tcjnPaODTy/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeDJ3amowZTlsZG5sZnlnYmJnZW5icmJnYXpyaWt2aW9weGJ0em11YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3lxD1O74siiz5FvrJs/giphy-downsized-large.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3B3cGdzNDZtcG9mbGcwMm90Njhtd2w0dmticGVsNjBqYTFtcnMxMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUOxfbuK9qc61NGiaI/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzlvY2pkeGZ3cWhkYmt5Zm5rc3dhenFmM2JhMGd3c3lvaHk0cW1saCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4oMoIbIQrvCjm/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHE2Zzc1MmFyczlseDgxYnMxbWd6NHBkMWN2cTdpMTFubzd4b2t0MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o72EX5QZ9N9d51dqo/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2dnZWwzbnJlaGcxazdhcXFybXNqYzZkOThrNm1veDYxcWs4OThvYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ymckEpq27dQ9W/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHlmOGVxZTE4M245amJjbWNzZjRmOXVvMDUzd3ZiMTYxYzY4czcxZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/T7icYyYXUtbaM/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXI0Nmd6cnpjZ3Q0ems4MGYzeDV1bGtvemphZ2ltdG9nZ3V3bndmeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cgW5iwX0e37qg/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTlmcDhmZTBnY24zb3IyZThyZDhoZDNwOXZrMDl1azliazR2b2x4YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BbQRmt4tb0yEU/giphy.gif"
+            
+            
+            
+            // Add more URLs as needed
+        ];
+
         // Function to get the query parameter from the URL
         function getQueryParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -23,22 +137,26 @@
 
         // Messages based on score
         const messages = [
-            "You just didin´t try,right?",
+            "You just didn´t try, right?",
             "Damn, you're THAT bad?",
             "Do you even have ears?",
             "Do you even know anything else than pop?",
-            "I wouldn't pass you the aux",
+            "I wouldn't pass you the aux...",
             "Not bad, but not good either.",
             "Good guess, not really.",
             "Mediocre, at best.",
-            "Just use your brain, it's not that hard. ",
+            "Just use your brain, it's not that hard.",
             "Nice score, could be better."
         ];
 
         // Determine the message to display based on the score
-        const messageIndex = Math.min(Math.floor(score / 20), messages.length - 1);
+        const messageIndex = Math.min(Math.floor(score / 5), messages.length - 1);
         const message = messages[messageIndex];
         document.getElementById('message').textContent = message;
+
+        // Randomly select a GIF and set it as the background
+        const randomGif = gifUrls[Math.floor(Math.random() * gifUrls.length)];
+        document.getElementById('bg-gif').src = randomGif;
 
         document.getElementById('try-again').onclick = () => {
             window.location.href = 'index.html'; // Replace with your main game file name if different
