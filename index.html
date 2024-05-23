@@ -88,7 +88,7 @@
         const redirectUri = 'https://genrefy-psi.vercel.app/callback'; // Update with your Vercel deployment URL
 
         document.getElementById('login-button').addEventListener('click', () => {
-            const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+            const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=11a73fdbec8b4e8e837eae1be557ec6e&scope=user-read-private%20user-read-email&redirect_uri=https%3A%2F%2Fgenrefy-psi.vercel.app%2Fcallback`;
             window.location.href = url;
         });
 
