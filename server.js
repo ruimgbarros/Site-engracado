@@ -7,13 +7,17 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8000;
 
-const clientId = '11a73fdbec8b4e8e837eae1be557ec6e';
-const clientSecret = '8a49af646d2346e68287e2c9345c15a5';
+const clientId = '11a73fdbec8b4e8e837eae1be557ec6e'; // Your Spotify client ID
+const clientSecret = '8a49af646d2346e68287e2c9345c15a5'; // Your Spotify client secret
 const redirectUri = process.env.PORT ? `https://site-engracado.vercel.app/callback` : 'http://localhost:8000/callback';
 
 // Serve the index.html file at the root URL
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    // Render index.html and pass clientId and redirectUri as template variables
+    res.sendFile(path.join(__dirname, 'index.html'), {
+        clientId: clientId,
+        redirectUri: redirectUri
+    });
 });
 
 app.get('/callback', async (req, res) => {
@@ -49,22 +53,22 @@ app.get('/callback', async (req, res) => {
         }
     }
 });
+
 app.get('/game.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'game.html'));
-
 });
+
 app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
-
 });
+
 app.get('/background.mp4.mp4', (req, res) => {
     res.sendFile(path.join(__dirname, 'background.mp4.mp4'));
-
 });
+
 app.get('/game_over.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'game_over.html'));
 });
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
