@@ -8,7 +8,7 @@ const port = process.env.PORT || 8000;
 
 const clientId = '11a73fdbec8b4e8e837eae1be557ec6e'; // Your Spotify client ID
 const clientSecret = '8a49af646d2346e68287e2c9345c15a5'; // Your Spotify client secret
-const redirectUri = 'https://genrefy-psi.vercel.app/callback'; // Update with your Vercel deployment URL
+const redirectUri = 'https://site-engracado-beta.vercel.app/callback'; // Update with your Vercel deployment URL
 
 // Serve the index.html file at the root URL
 app.get('/', (req, res) => {

@@ -85,10 +85,10 @@
     <script>
         const scopes = 'user-read-private user-read-email';
         const clientId = '11a73fdbec8b4e8e837eae1be557ec6e'; // Your Spotify client ID
-        const redirectUri = 'https://genrefy-psi.vercel.app/callback'; // Update with your Vercel deployment URL
+        const redirectUri = 'https://site-engracado-beta.vercel.app/callback'; // Update with your Vercel deployment URL
 
         document.getElementById('login-button').addEventListener('click', () => {
-            const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=11a73fdbec8b4e8e837eae1be557ec6e&scope=user-read-private%20user-read-email&redirect_uri=https%3A%2F%2Fgenrefy-psi.vercel.app%2Fcallback`;
+            const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
             window.location.href = url;
         });
 
