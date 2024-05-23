@@ -84,11 +84,10 @@
 
     <script>
         const scopes = 'user-read-private user-read-email';
+        const clientId = '11a73fdbec8b4e8e837eae1be557ec6e'; // Your Spotify client ID
+        const redirectUri = 'https://genrefy-psi.vercel.app/callback'; // Update with your Vercel deployment URL
 
         document.getElementById('login-button').addEventListener('click', () => {
-            const clientId = "<%= clientId %>"; // Access clientId from backend
-            const redirectUri = "<%= redirectUri %>"; // Access redirectUri from backend
-
             const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
             window.location.href = url;
         });
